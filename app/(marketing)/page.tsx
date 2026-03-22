@@ -36,7 +36,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { useLanguage, type Language } from "@/lib/i18n"
+import { useI18n, type Locale } from "@/lib/i18n"
 import { cn } from "@/lib/utils"
 
 const features = [
@@ -170,15 +170,15 @@ const stats = [
 
 export default function LandingPage() {
   const { theme, setTheme } = useTheme()
-  const { language, setLanguage, t } = useLanguage()
+  const { locale, setLocale, t } = useI18n()
   const { scrollYProgress } = useScroll()
   const opacity = useTransform(scrollYProgress, [0, 0.2], [1, 0])
   const scale = useTransform(scrollYProgress, [0, 0.2], [1, 0.95])
 
-  const languages: { code: Language; label: string; flag: string }[] = [
-    { code: "ka", label: "ქართული", flag: "🇬🇪" },
-    { code: "en", label: "English", flag: "🇺🇸" },
-    { code: "ru", label: "Русский", flag: "🇷🇺" },
+  const languages: { code: Locale; label: string; flag: string }[] = [
+    { code: "ka", label: "ქართული", flag: "GE" },
+    { code: "en", label: "English", flag: "US" },
+    { code: "ru", label: "Русский", flag: "RU" },
   ]
 
   return (
@@ -223,8 +223,8 @@ export default function LandingPage() {
                 {languages.map((lang) => (
                   <DropdownMenuItem
                     key={lang.code}
-                    onClick={() => setLanguage(lang.code)}
-                    className={cn(language === lang.code && "bg-muted")}
+                    onClick={() => setLocale(lang.code)}
+                    className={cn(locale === lang.code && "bg-muted")}
                   >
                     <span className="mr-2">{lang.flag}</span>
                     {lang.label}

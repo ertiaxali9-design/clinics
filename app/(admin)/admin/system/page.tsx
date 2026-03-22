@@ -29,10 +29,10 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import { Textarea } from "@/components/ui/textarea"
-import { useLanguage } from "@/lib/i18n"
+import { useI18n } from "@/lib/i18n"
 
 export default function SystemSettingsPage() {
-  const { t } = useLanguage()
+  const { t } = useI18n()
 
   return (
     <motion.div

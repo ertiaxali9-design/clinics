@@ -21,8 +21,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Progress } from "@/components/ui/progress"
 import { Badge } from "@/components/ui/badge"
-import { useLanguage } from "@/lib/i18n"
-import { tenants } from "@/lib/mock-data"
+import { useI18n } from "@/lib/i18n"
+import { mockTenants } from "@/lib/mock-data"
 import {
   AreaChart,
   Area,
@@ -98,7 +98,7 @@ const resourceUsage = [
 ]
 
 export default function AdminDashboardPage() {
-  const { t } = useLanguage()
+  const { t } = useI18n()
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -357,30 +357,29 @@ export default function AdminDashboardPage() {
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
-              {tenants.slice(0, 5).map((tenant) => (
+              {mockTenants.slice(0, 5).map((tenant) => (
                 <div
                   key={tenant.id}
                   className="flex items-center justify-between rounded-lg border border-border p-4 hover:bg-muted/50 transition-colors"
                 >
                   <div className="flex items-center gap-4">
                     <div
-                      className="flex h-12 w-12 items-center justify-center rounded-xl text-white font-bold"
-                      style={{ backgroundColor: tenant.brandColor }}
+                      className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary text-primary-foreground font-bold"
                     >
                       {tenant.name.charAt(0)}
                     </div>
                     <div>
                       <p className="font-medium">{tenant.name}</p>
                       <p className="text-sm text-muted-foreground">
-                        {tenant.domain} | {tenant.plan} plan
+                        {tenant.slug} | {tenant.plan} plan
                       </p>
                     </div>
                   </div>
                   <div className="flex items-center gap-4">
                     <div className="text-right">
-                      <p className="text-sm font-medium">{tenant.userCount} users</p>
+                      <p className="text-sm font-medium">{tenant.usersCount} users</p>
                       <p className="text-xs text-muted-foreground">
-                        {tenant.patientCount} patients
+                        {tenant.patientsCount} patients
                       </p>
                     </div>
                     <Badge

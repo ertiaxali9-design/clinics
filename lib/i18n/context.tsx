@@ -3,15 +3,32 @@
 import { createContext, useContext, useState, useCallback, useEffect, type ReactNode } from 'react'
 import { translations, type Locale, type TranslationKeys } from './translations'
 
+type TranslationFunction = (key: string) => string
+
 interface I18nContextType {
   locale: Locale
   setLocale: (locale: Locale) => void
-  t: TranslationKeys
+  t: TranslationFunction
 }
 
 const I18nContext = createContext<I18nContextType | undefined>(undefined)
 
 const LOCALE_KEY = 'marte-locale'
+
+function getNestedValue(obj: Record<string, unknown>, path: string): string {
+  const keys = path.split('.')
+  let result: unknown = obj
+  
+  for (const key of keys) {
+    if (result && typeof result === 'object' && key in result) {
+      result = (result as Record<string, unknown>)[key]
+    } else {
+      return path // Return key if not found
+    }
+  }
+  
+  return typeof result === 'string' ? result : path
+}
 
 export function I18nProvider({ children }: { children: ReactNode }) {
   const [locale, setLocaleState] = useState<Locale>('ka')
@@ -28,7 +45,9 @@ export function I18nProvider({ children }: { children: ReactNode }) {
     localStorage.setItem(LOCALE_KEY, newLocale)
   }, [])
 
-  const t = translations[locale]
+  const t = useCallback((key: string): string => {
+    return getNestedValue(translations[locale] as unknown as Record<string, unknown>, key)
+  }, [locale])
 
   return (
     <I18nContext.Provider value={{ locale, setLocale, t }}>

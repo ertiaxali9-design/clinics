@@ -37,16 +37,27 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
-import { useLanguage } from "@/lib/i18n"
-import { users, tenants } from "@/lib/mock-data"
+import { useI18n } from "@/lib/i18n"
+import { mockTenants } from "@/lib/mock-data"
+
+// Mock users data
+const mockUsers = [
+  { id: "u1", name: "სუპერ ადმინი", email: "admin@marte.ge", role: "superAdmin", tenantId: "tenant1", status: "active", lastActive: "2025-03-22", avatar: null },
+  { id: "u2", name: "თამარ ნიკოლაძე", email: "tamar@medi-clinic.ge", role: "admin", tenantId: "tenant1", status: "active", lastActive: "2025-03-22", avatar: null },
+  { id: "u3", name: "გიორგი ხუციშვილი", email: "giorgi@medi-clinic.ge", role: "doctor", tenantId: "tenant1", status: "active", lastActive: "2025-03-21", avatar: null },
+  { id: "u4", name: "ნათია მჭედლიშვილი", email: "natia@health-center.ge", role: "doctor", tenantId: "tenant2", status: "active", lastActive: "2025-03-22", avatar: null },
+  { id: "u5", name: "ლევან ჯანელიძე", email: "levan@dental-plus.ge", role: "admin", tenantId: "tenant3", status: "active", lastActive: "2025-03-20", avatar: null },
+  { id: "u6", name: "მარიამ გელაშვილი", email: "mariam@medi-clinic.ge", role: "nurse", tenantId: "tenant1", status: "inactive", lastActive: "2025-02-15", avatar: null },
+  { id: "u7", name: "ანა წერეთელი", email: "ana@health-center.ge", role: "receptionist", tenantId: "tenant2", status: "active", lastActive: "2025-03-22", avatar: null },
+]
 
 export default function AdminUsersPage() {
-  const { t } = useLanguage()
+  const { t } = useI18n()
   const [searchQuery, setSearchQuery] = useState("")
   const [roleFilter, setRoleFilter] = useState("all")
   const [tenantFilter, setTenantFilter] = useState("all")
 
-  const filteredUsers = users.filter((user) => {
+  const filteredUsers = mockUsers.filter((user) => {
     const matchesSearch =
       user.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
       user.email.toLowerCase().includes(searchQuery.toLowerCase())
@@ -86,13 +97,12 @@ export default function AdminUsersPage() {
   }
 
   const getTenantName = (tenantId: string) => {
-    const tenant = tenants.find((t) => t.id === tenantId)
+    const tenant = mockTenants.find((t) => t.id === tenantId)
     return tenant?.name || "Unknown"
   }
 
   const getTenantColor = (tenantId: string) => {
-    const tenant = tenants.find((t) => t.id === tenantId)
-    return tenant?.brandColor || "#888"
+    return "#0EA5E9"
   }
 
   return (
@@ -127,7 +137,7 @@ export default function AdminUsersPage() {
               </div>
               <div>
                 <p className="text-sm text-muted-foreground">Total Users</p>
-                <p className="text-2xl font-bold">{users.length}</p>
+                <p className="text-2xl font-bold">{mockUsers.length}</p>
               </div>
             </div>
           </CardContent>
@@ -141,7 +151,7 @@ export default function AdminUsersPage() {
               <div>
                 <p className="text-sm text-muted-foreground">Active</p>
                 <p className="text-2xl font-bold">
-                  {users.filter((u) => u.status === "active").length}
+                  {mockUsers.filter((u) => u.status === "active").length}
                 </p>
               </div>
             </div>
@@ -156,7 +166,7 @@ export default function AdminUsersPage() {
               <div>
                 <p className="text-sm text-muted-foreground">Super Admins</p>
                 <p className="text-2xl font-bold">
-                  {users.filter((u) => u.role === "superAdmin").length}
+                  {mockUsers.filter((u) => u.role === "superAdmin").length}
                 </p>
               </div>
             </div>
@@ -171,7 +181,7 @@ export default function AdminUsersPage() {
               <div>
                 <p className="text-sm text-muted-foreground">Doctors</p>
                 <p className="text-2xl font-bold">
-                  {users.filter((u) => u.role === "doctor").length}
+                  {mockUsers.filter((u) => u.role === "doctor").length}
                 </p>
               </div>
             </div>
@@ -212,7 +222,7 @@ export default function AdminUsersPage() {
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="all">All Tenants</SelectItem>
-                  {tenants.map((tenant) => (
+                  {mockTenants.map((tenant) => (
                     <SelectItem key={tenant.id} value={tenant.id}>
                       {tenant.name}
                     </SelectItem>

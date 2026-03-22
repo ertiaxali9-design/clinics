@@ -51,20 +51,20 @@ import {
 import { Label } from "@/components/ui/label"
 import { Switch } from "@/components/ui/switch"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { useLanguage } from "@/lib/i18n"
-import { tenants } from "@/lib/mock-data"
+import { useI18n } from "@/lib/i18n"
+import { mockTenants } from "@/lib/mock-data"
 
 export default function TenantsPage() {
-  const { t } = useLanguage()
+  const { t } = useI18n()
   const [searchQuery, setSearchQuery] = useState("")
   const [statusFilter, setStatusFilter] = useState("all")
   const [planFilter, setPlanFilter] = useState("all")
   const [viewMode, setViewMode] = useState<"grid" | "table">("grid")
 
-  const filteredTenants = tenants.filter((tenant) => {
+  const filteredTenants = mockTenants.filter((tenant) => {
     const matchesSearch =
       tenant.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      tenant.domain.toLowerCase().includes(searchQuery.toLowerCase())
+      tenant.slug.toLowerCase().includes(searchQuery.toLowerCase())
     const matchesStatus = statusFilter === "all" || tenant.status === statusFilter
     const matchesPlan = planFilter === "all" || tenant.plan === planFilter
     return matchesSearch && matchesStatus && matchesPlan
@@ -188,7 +188,7 @@ export default function TenantsPage() {
               </div>
               <div>
                 <p className="text-sm text-muted-foreground">Total Tenants</p>
-                <p className="text-2xl font-bold">{tenants.length}</p>
+                <p className="text-2xl font-bold">{mockTenants.length}</p>
               </div>
             </div>
           </CardContent>
@@ -202,7 +202,7 @@ export default function TenantsPage() {
               <div>
                 <p className="text-sm text-muted-foreground">Active</p>
                 <p className="text-2xl font-bold">
-                  {tenants.filter((t) => t.status === "active").length}
+                  {mockTenants.filter((t) => t.status === "active").length}
                 </p>
               </div>
             </div>
@@ -217,7 +217,7 @@ export default function TenantsPage() {
               <div>
                 <p className="text-sm text-muted-foreground">Trial</p>
                 <p className="text-2xl font-bold">
-                  {tenants.filter((t) => t.status === "trial").length}
+                  {mockTenants.filter((t) => t.status === "trial").length}
                 </p>
               </div>
             </div>
@@ -232,7 +232,7 @@ export default function TenantsPage() {
               <div>
                 <p className="text-sm text-muted-foreground">Enterprise</p>
                 <p className="text-2xl font-bold">
-                  {tenants.filter((t) => t.plan === "enterprise").length}
+                  {mockTenants.filter((t) => t.plan === "enterprise").length}
                 </p>
               </div>
             </div>
@@ -302,19 +302,18 @@ export default function TenantsPage() {
                   <div className="flex items-start justify-between">
                     <div className="flex items-center gap-4">
                       <div
-                        className="flex h-14 w-14 items-center justify-center rounded-xl text-white text-xl font-bold"
-                        style={{ backgroundColor: tenant.brandColor }}
+                        className="flex h-14 w-14 items-center justify-center rounded-xl bg-primary text-primary-foreground text-xl font-bold"
                       >
                         {tenant.name.charAt(0)}
                       </div>
                       <div>
                         <h3 className="font-semibold text-lg">{tenant.name}</h3>
                         <a
-                          href={`https://${tenant.domain}`}
+                          href={`https://${tenant.slug}.marte.ge`}
                           target="_blank"
                           className="flex items-center gap-1 text-sm text-muted-foreground hover:text-primary"
                         >
-                          {tenant.domain}
+                          {tenant.slug}.marte.ge
                           <ExternalLink className="h-3 w-3" />
                         </a>
                       </div>
@@ -368,11 +367,11 @@ export default function TenantsPage() {
 
                   <div className="mt-6 grid grid-cols-3 gap-4 border-t border-border pt-4">
                     <div className="text-center">
-                      <p className="text-2xl font-bold">{tenant.userCount}</p>
+                      <p className="text-2xl font-bold">{tenant.usersCount}</p>
                       <p className="text-xs text-muted-foreground">Users</p>
                     </div>
                     <div className="text-center">
-                      <p className="text-2xl font-bold">{tenant.patientCount}</p>
+                      <p className="text-2xl font-bold">{tenant.patientsCount}</p>
                       <p className="text-xs text-muted-foreground">Patients</p>
                     </div>
                     <div className="text-center">
@@ -425,14 +424,13 @@ export default function TenantsPage() {
                     <td className="px-6 py-4">
                       <div className="flex items-center gap-3">
                         <div
-                          className="flex h-10 w-10 items-center justify-center rounded-lg text-white font-bold"
-                          style={{ backgroundColor: tenant.brandColor }}
+                          className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary text-primary-foreground font-bold"
                         >
                           {tenant.name.charAt(0)}
                         </div>
                         <div>
                           <p className="font-medium">{tenant.name}</p>
-                          <p className="text-sm text-muted-foreground">{tenant.domain}</p>
+                          <p className="text-sm text-muted-foreground">{tenant.slug}.marte.ge</p>
                         </div>
                       </div>
                     </td>
@@ -447,7 +445,7 @@ export default function TenantsPage() {
                         {tenant.plan}
                       </Badge>
                     </td>
-                    <td className="px-6 py-4">{tenant.userCount}</td>
+                    <td className="px-6 py-4">{tenant.usersCount}</td>
                     <td className="px-6 py-4">{tenant.monthlyRevenue}</td>
                     <td className="px-6 py-4">
                       <div className="flex items-center gap-2">

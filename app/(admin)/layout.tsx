@@ -33,13 +33,13 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { useLanguage, type Language } from "@/lib/i18n"
+import { useI18n, type Locale } from "@/lib/i18n"
 
 const adminNavItems = [
-  { href: "/admin", icon: BarChart3, labelKey: "dashboard" },
-  { href: "/admin/tenants", icon: Building2, labelKey: "tenants" },
-  { href: "/admin/users", icon: Users, labelKey: "users" },
-  { href: "/admin/system", icon: Settings, labelKey: "settings" },
+  { href: "/admin", icon: BarChart3, labelKey: "dashboard" as const },
+  { href: "/admin/tenants", icon: Building2, labelKey: "tenants" as const },
+  { href: "/admin/users", icon: Users, labelKey: "users" as const },
+  { href: "/admin/system", icon: Settings, labelKey: "settings" as const },
 ]
 
 export default function AdminLayout({
@@ -50,12 +50,12 @@ export default function AdminLayout({
   const [collapsed, setCollapsed] = useState(false)
   const pathname = usePathname()
   const { theme, setTheme } = useTheme()
-  const { language, setLanguage, t } = useLanguage()
+  const { locale, setLocale, t } = useI18n()
 
-  const languages: { code: Language; label: string; flag: string }[] = [
-    { code: "ka", label: "ქართული", flag: "🇬🇪" },
-    { code: "en", label: "English", flag: "🇺🇸" },
-    { code: "ru", label: "Русский", flag: "🇷🇺" },
+  const languages: { code: Locale; label: string; flag: string }[] = [
+    { code: "ka", label: "ქართული", flag: "GE" },
+    { code: "en", label: "English", flag: "US" },
+    { code: "ru", label: "Русский", flag: "RU" },
   ]
 
   return (
@@ -168,8 +168,8 @@ export default function AdminLayout({
                 {languages.map((lang) => (
                   <DropdownMenuItem
                     key={lang.code}
-                    onClick={() => setLanguage(lang.code)}
-                    className={cn(language === lang.code && "bg-muted")}
+                    onClick={() => setLocale(lang.code)}
+                    className={cn(locale === lang.code && "bg-muted")}
                   >
                     <span className="mr-2">{lang.flag}</span>
                     {lang.label}
