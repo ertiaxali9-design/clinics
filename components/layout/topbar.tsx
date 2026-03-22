@@ -1,7 +1,9 @@
 'use client'
 
 import { useTheme } from 'next-themes'
+import { useRouter } from 'next/navigation'
 import { useI18n, useTranslation, localeNames, type Locale } from '@/lib/i18n'
+import { useAuth } from '@/lib/auth'
 import { Button } from '@/components/ui/button'
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 import {
@@ -22,8 +24,24 @@ interface TopbarProps {
 
 export function Topbar({ sidebarWidth }: TopbarProps) {
   const { theme, setTheme } = useTheme()
+  const router = useRouter()
   const { locale, setLocale } = useI18n()
+  const { user, logout } = useAuth()
   const t = useTranslation()
+
+  const handleLogout = () => {
+    logout()
+    router.push('/login')
+  }
+
+  const getUserInitials = () => {
+    if (!user?.name) return 'U'
+    const parts = user.name.split(' ')
+    if (parts.length >= 2) {
+      return `${parts[0][0]}${parts[1][0]}`.toUpperCase()
+    }
+    return user.name.substring(0, 2).toUpperCase()
+  }
 
   const toggleTheme = () => {
     setTheme(theme === 'dark' ? 'light' : 'dark')
@@ -85,16 +103,23 @@ export function Topbar({ sidebarWidth }: TopbarProps) {
             <Button variant="ghost" className="h-9 gap-2 px-2">
               <Avatar className="h-7 w-7">
                 <AvatarFallback className="bg-primary text-primary-foreground text-xs">
-                  TN
+                  {getUserInitials()}
                 </AvatarFallback>
               </Avatar>
               <span className="text-sm font-medium hidden sm:inline-block">
-                თამარ ნიკოლაძე
+                {user?.name || 'User'}
               </span>
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="w-48">
-            <DropdownMenuLabel>ჩემი ანგარიში</DropdownMenuLabel>
+            <DropdownMenuLabel>
+              <div className="flex flex-col">
+                <span>{user?.name}</span>
+                <span className="text-xs font-normal text-muted-foreground">
+                  {user?.email}
+                </span>
+              </div>
+            </DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuItem>
               <User className="mr-2 h-4 w-4" />
@@ -107,7 +132,10 @@ export function Topbar({ sidebarWidth }: TopbarProps) {
               </Link>
             </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem className="text-destructive focus:text-destructive">
+            <DropdownMenuItem 
+              className="text-destructive focus:text-destructive"
+              onClick={handleLogout}
+            >
               <LogOut className="mr-2 h-4 w-4" />
               {t.nav.logout}
             </DropdownMenuItem>

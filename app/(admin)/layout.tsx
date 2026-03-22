@@ -2,8 +2,10 @@
 
 import { useState } from "react"
 import Link from "next/link"
-import { usePathname } from "next/navigation"
+import { usePathname, useRouter } from "next/navigation"
 import { motion } from "framer-motion"
+import { AuthGuard } from "@/components/auth"
+import { useAuth } from "@/lib/auth"
 import {
   Building2,
   Users,
@@ -49,8 +51,10 @@ export default function AdminLayout({
 }) {
   const [collapsed, setCollapsed] = useState(false)
   const pathname = usePathname()
+  const router = useRouter()
   const { theme, setTheme } = useTheme()
   const { locale, setLocale, t } = useI18n()
+  const { logout, user } = useAuth()
 
   const languages: { code: Locale; label: string; flag: string }[] = [
     { code: "ka", label: "ქართული", flag: "GE" },
@@ -58,7 +62,13 @@ export default function AdminLayout({
     { code: "ru", label: "Русский", flag: "RU" },
   ]
 
+  const handleLogout = () => {
+    logout()
+    router.push('/login')
+  }
+
   return (
+    <AuthGuard allowedRoles={['admin']}>
     <div className="flex h-screen bg-background">
       {/* Admin Sidebar */}
       <motion.aside
@@ -215,9 +225,9 @@ export default function AdminLayout({
                   {t("settings")}
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem className="text-destructive">
+                <DropdownMenuItem className="text-destructive" onClick={handleLogout}>
                   <LogOut className="mr-2 h-4 w-4" />
-                  {t("logout")}
+                  {t("nav.logout")}
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
@@ -230,5 +240,6 @@ export default function AdminLayout({
         </main>
       </div>
     </div>
+    </AuthGuard>
   )
 }
