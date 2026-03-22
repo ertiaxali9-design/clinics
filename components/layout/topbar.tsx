@@ -1,7 +1,7 @@
 'use client'
 
 import { useTheme } from 'next-themes'
-import { useI18n, localeNames, type Locale } from '@/lib/i18n'
+import { useI18n, useTranslation, localeNames, type Locale } from '@/lib/i18n'
 import { Button } from '@/components/ui/button'
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 import {
@@ -22,7 +22,8 @@ interface TopbarProps {
 
 export function Topbar({ sidebarWidth }: TopbarProps) {
   const { theme, setTheme } = useTheme()
-  const { locale, setLocale, t } = useI18n()
+  const { locale, setLocale } = useI18n()
+  const t = useTranslation()
 
   const toggleTheme = () => {
     setTheme(theme === 'dark' ? 'light' : 'dark')

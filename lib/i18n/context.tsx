@@ -32,8 +32,10 @@ function getNestedValue(obj: Record<string, unknown>, path: string): string {
 
 export function I18nProvider({ children }: { children: ReactNode }) {
   const [locale, setLocaleState] = useState<Locale>('ka')
+  const [mounted, setMounted] = useState(false)
 
   useEffect(() => {
+    setMounted(true)
     const saved = localStorage.getItem(LOCALE_KEY) as Locale | null
     if (saved && ['ka', 'en', 'ru'].includes(saved)) {
       setLocaleState(saved)
@@ -65,6 +67,7 @@ export function useI18n() {
 }
 
 export function useTranslation() {
-  const { t } = useI18n()
-  return t
+  const context = useContext(I18nContext)
+  const locale = context?.locale ?? 'ka'
+  return translations[locale]
 }

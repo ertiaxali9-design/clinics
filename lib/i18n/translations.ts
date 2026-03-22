@@ -198,6 +198,20 @@ export const translations = {
       darkMode: 'მუქი',
       systemMode: 'სისტემური',
     },
+    // GOD MODE / Admin
+    godMode: {
+      backToApp: 'აპლიკაციაში დაბრუნება',
+      totalTenants: 'სულ ორგანიზაციები',
+      activeUsers: 'აქტიური მომხმარებლები',
+      monthlyRevenue: 'თვის შემოსავალი',
+      apiRequests: 'API მოთხოვნები',
+      tenants: 'ორგანიზაციები',
+      users: 'მომხმარებლები',
+      settings: 'პარამეტრები',
+      dashboard: 'დაშბორდი',
+      search: 'ძებნა...',
+      logout: 'გასვლა',
+    },
     // Common
     common: {
       save: 'შენახვა',
@@ -662,7 +676,7 @@ export const translations = {
       income: 'Доход',
       expenses: 'Расходы',
       profitLoss: 'Прибыль/Убыток',
-      balance: 'Баланс',
+      balance: 'Бала��с',
       transactions: 'Транзакции',
       categories: 'Категории',
       rsIntegration: 'Интеграция RS.ge',
