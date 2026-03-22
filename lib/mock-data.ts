@@ -101,6 +101,57 @@ export interface Tenant {
   lastActive: string
 }
 
+// Dental Types
+export type ToothCondition = 
+  | 'healthy' 
+  | 'cavity' 
+  | 'filled' 
+  | 'crown' 
+  | 'missing' 
+  | 'implant' 
+  | 'root_canal' 
+  | 'bridge'
+  | 'veneer'
+
+export type ToothSurface = 'mesial' | 'distal' | 'occlusal' | 'buccal' | 'lingual'
+
+export interface ToothRecord {
+  toothNumber: number
+  condition: ToothCondition
+  surfaces?: ToothSurface[]
+  notes?: string
+  lastTreatment?: string
+}
+
+export interface DentalChart {
+  patientId: string
+  teeth: ToothRecord[]
+  lastUpdated: string
+}
+
+export interface DentalTreatment {
+  id: string
+  patientId: string
+  toothNumber: number | null
+  treatmentType: string
+  description: string
+  date: string
+  doctorId: string
+  doctorName: string
+  price: number
+  status: 'planned' | 'in-progress' | 'completed'
+  notes?: string
+}
+
+export interface DentalService {
+  id: string
+  name: string
+  category: 'preventive' | 'restorative' | 'cosmetic' | 'surgical' | 'orthodontic' | 'endodontic'
+  price: number
+  duration: number
+  description: string
+}
+
 // Mock Patients
 export const mockPatients: Patient[] = [
   {
